@@ -56,8 +56,13 @@ class product_qc_trigger_template(osv.osv):
         'company_id': fields.many2one('res.company', 'Company'),
     }
     
+    def _default_company_id(self, cr, uid, context=None):
+        user = self.pool.get('res.users').browse(cr, uid, uid, context)
+        return user.company_id.id
+    
     _defaults = {  
         'sequence': 0,
+        'company_id': _default_company_id,
     }
     
     _sql_constraints = [
@@ -77,6 +82,52 @@ class product_product(osv.osv):
     '''
     _inherit = 'product.product'
     
+    # product.product
+    def _calc_trigger_ids(self, cr, uid, ids, fieldname, args, context=None):
+        trigger_template_proxy = self.pool.get('product.qc.trigger.template')
+        
+        res = {}
+        for product_id in ids:
+            res[product_id] = []
+            
+            trigger_template_ids = trigger_template_proxy.search(cr, uid, 
+                    [('product_id','=',product_id)], context=context)
+            for trigger_template in trigger_template_proxy.browse(cr, uid, 
+                    trigger_template_ids, context):
+                if trigger_template.trigger_id.id not in res[product_id]:
+                    res[product_id].append(trigger_template.trigger_id.id)
+        return res
+    
+    # product.product
+    def _search_trigger_ids(self, cr, uid, obj, name, args, context):
+        trigger_template_proxy = self.pool.get('product.qc.trigger.template')
+        
+        res = []
+        for fieldname, operator, condition in args:
+            opposite = False
+            if 'in' in operator:
+                if operator == 'not in':
+                    operator = 'in'
+                    opposite = True
+            else:
+                if operator in ('!=', '<>'):
+                    operator = '='
+                    opposite = True
+            
+            template_trigger_ids = trigger_template_proxy.search(cr, uid,
+                    [('trigger_id', operator, condition)], context=context)
+            
+            product_ids = []
+            for template_trigger in trigger_template_proxy.browse(cr, uid, 
+                    template_trigger_ids, context):
+                product_ids.append(template_trigger.product_id.id)
+            
+            operator = 'in'
+            if opposite:
+                operator = 'not in'
+            res.append(('id', operator, product_ids))
+        return res
+    
     _columns = {
         'qc_template_trigger_ids': fields.one2many(
                 'product.qc.trigger.template', 'product_id', 'QC Triggers',
@@ -84,6 +135,9 @@ class product_product(osv.osv):
                 "Control Test (based on the defined Template).\n"
                 "It gets its default value for generic templates from the "
                 "Company."),
+        'qc_trigger_ids': fields.function(_calc_trigger_ids, method=True, 
+                type='many2many', relation='qc.trigger', string='QC Triggers',
+                fnct_search=_search_trigger_ids),
     }
     
     # product.product

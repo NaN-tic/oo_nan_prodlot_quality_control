@@ -65,7 +65,15 @@
         'prodlot_workflow.xml',
         'security/ir.model.access.csv',
     ],
-    "demo_xml" : [],
+    "demo_xml" : [
+        'prodlot_quality_control_demo.xml',
+    ],
+    "test": [
+        'test/prodlot_without_quality_control.yml',
+        'test/prodlot_with_one_qc_test.yml',
+        'test/prodlot_with_two_qc_test.yml',
+        'test/prodlot_with_two_qc_test_diff_trigger.yml',
+    ],
     "active": False,
     "installable": True,
 }

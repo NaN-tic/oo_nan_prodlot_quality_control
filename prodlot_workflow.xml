@@ -21,6 +21,8 @@
         <record id="act_next_test" model="workflow.activity">
             <field name="wkf_id" ref="wkf_prodlot"/>
             <field name="name">next_test</field>
+            <field name="kind">function</field>
+            <field name="action">action_wofkflow_next_test()</field>
         </record>
         
         <record id="act_pending_test" model="workflow.activity">
@@ -34,8 +36,7 @@
         <record id="act_valid" model="workflow.activity">
             <field name="wkf_id" ref="wkf_prodlot"/>
             <field name="name">valid</field>
-            <field name="kind">subflow</field>
-            <field name="subflow_id" ref="nan_quality_control.wkf_qc_test"/>
+            <field name="kind">function</field>
             <field name="action">action_wofkflow_valid()</field>
         </record>
         
@@ -76,9 +77,9 @@
         </record>
         
         <!-- Pending Test Output Transitions -->
-        <record id="trans_pending_test_valid" model="workflow.transition">
+        <record id="trans_pending_test_next_test" model="workflow.transition">
             <field name="act_from" ref="act_pending_test"/>
-            <field name="act_to" ref="act_valid"/>
+            <field name="act_to" ref="act_next_test"/>
             <!-- <field name="condition">test_valid()</field> -->
             <field name="signal">subflow.success</field>
         </record>
@@ -89,9 +90,15 @@
             <field name="signal">subflow.failed</field>
         </record>
         
-        <record id="trans_valid_cancel" model="workflow.transition">
-            <field name="act_from" ref="act_valid"/>
+        <record id="trans_pending_test_cancel" model="workflow.transition">
+            <field name="act_from" ref="act_pending_test"/>
             <field name="act_to" ref="act_cancel"/>
+            <!-- 
+            To be able to go out of 'subflow' activity without subflow signal, 
+            the workitem must to be disassociated of any subflow.
+            It could be done with 'force_cancel' function which after raise 
+            'cancel' signal -->
+            <field name="condition">test_not_qc_test_subflow()</field>
             <field name="signal">cancel</field>
         </record>
         
@@ -99,13 +106,8 @@
         <record id="trans_valid_next_test" model="workflow.transition">
             <field name="act_from" ref="act_valid"/>
             <field name="act_to" ref="act_next_test"/>
+            <field name="condition">test_pending_test()</field>
             <field name="signal">next_test</field>
-        </record>
-        
-        <record id="trans_valid_pending_test" model="workflow.transition">
-            <field name="act_from" ref="act_valid"/>
-            <field name="act_to" ref="act_pending_test"/>
-            <field name="signal">subflow.draft</field>
         </record>
         
         <record id="trans_valid_cancel" model="workflow.transition">
@@ -124,6 +126,12 @@
         <record id="trans_test_failed_cancel" model="workflow.transition">
             <field name="act_from" ref="act_test_failed"/>
             <field name="act_to" ref="act_cancel"/>
+            <!-- 
+            To be able to go out of 'subflow' activity without subflow signal, 
+            the workitem must to be disassociated of any subflow.
+            It could be done with 'force_cancel' function which after raise 
+            'cancel' signal -->
+            <field name="condition">test_not_qc_test_subflow()</field>
             <field name="signal">cancel</field>
         </record>
         
