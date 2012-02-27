@@ -523,7 +523,7 @@ class stock_production_lot(osv.osv):
         
         lot_w_subflow = [str(wi.inst_id.res_id) 
                 for wi in workitem_proxy.browse(cr, uid, workitem_ids, context)]
-        raise osv.osv_exception(
+        raise osv.except_osv(
                 _("Error Cancelling Lot with subflow!"),
                 _("You are trying to cancel the Production Lots with IDs "
                   "'%(lot_ids)s' which are associated to QC Test workflow, and "
