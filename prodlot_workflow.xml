@@ -38,6 +38,7 @@
             <field name="name">valid</field>
             <field name="kind">function</field>
             <field name="action">action_wofkflow_valid()</field>
+            <field name="signal_send">subflow.valid</field>
         </record>
         
         <record id="act_test_failed" model="workflow.activity">
@@ -46,6 +47,7 @@
             <field name="kind">subflow</field>
             <field name="subflow_id" ref="nan_quality_control.wkf_qc_test"/>
             <field name="action">action_wofkflow_test_failed()</field>
+            <field name="signal_send">subflow.test_failed</field>
         </record>
         
         <record id="act_cancel" model="workflow.activity">
@@ -53,6 +55,7 @@
             <field name="name">cancel</field>
             <field name="kind">function</field>
             <field name="action">action_wofkflow_cancel()</field>
+            <field name="signal_send">subflow.cancel</field>
         </record>
         
         
