@@ -38,6 +38,7 @@ class stock_production_lot_qc_trigger_test(osv.osv):
     '''
     _name = 'stock.production.lot.qc.trigger.test'
     _description = 'Quality Control Test Triggers by Lot'
+    _rec_name = 'trigger_id'
     _order = 'prodlot_id, sequence'
     
     
@@ -195,8 +196,11 @@ class stock_production_lot(osv.osv):
         'current_qc_test_trigger_id': fields.many2one(
                 'stock.production.lot.qc.trigger.test', 
                 'Current QC Test Trigger', 
-                domain="[('id','in',[x.id for x in qc_test_trigger_ids])]", readonly=True,
-                states={'valid':[('readonly',False)]}),
+                domain="[('id','in',[x.id for x in qc_test_trigger_ids])]", 
+                readonly=True, states = {
+                    'draft': [('readonly',False)],
+                    'valid': [('readonly',False)],
+                }),
         'current_qc_test_id': fields.related('current_qc_test_trigger_id', 
                 'test_id', type='many2one', relation='qc.test', 
                 string="Current QC Test", readonly=True),
@@ -206,6 +210,14 @@ class stock_production_lot(osv.osv):
         'state': 'draft',
         'active': True,
     }
+    
+    
+    # stock.production.lot
+    def onchange_product_id(self, cr, uid, ids, product_id, context):
+        """
+        Void function. Defined to could be extended in dependan modules
+        """
+        return {}
     
     
     # stock.production.lot
