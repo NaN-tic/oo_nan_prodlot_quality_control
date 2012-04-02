@@ -573,7 +573,7 @@ class stock_production_lot(osv.osv):
                     ('res_type', '=', 'stock.production.lot'),
                     ('res_id', 'in', ids),
                     ('state', '=', 'active'),
-                ], context)
+                ], context=context)
         if instance_ids:
             workitem_ids = workitem_proxy.search(cr, uid, [
                         ('inst_id', 'in', instance_ids),
