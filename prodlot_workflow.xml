@@ -63,7 +63,7 @@
         <record id="trans_draft_next_test" model="workflow.transition">
             <field name="act_from" ref="act_draft"/>
             <field name="act_to" ref="act_next_test"/>
-            <field name="signal">confirm</field>
+            <field name="signal"><!-- confirm --></field>
         </record>
         
         <!-- Next Test Output Transitions -->
