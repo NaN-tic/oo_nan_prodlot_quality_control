@@ -29,6 +29,7 @@
 
 from osv import osv, fields
 
+
 class product_qc_trigger_template(osv.osv):
     '''
     Model to configure Quality Control Templates/Tests triggers by Product.
@@ -37,40 +38,28 @@ class product_qc_trigger_template(osv.osv):
     _name = 'product.qc.trigger.template'
     _description = 'Quality Control Template Triggers by Product'
     _order = 'product_id, company_id, sequence'
-    
+
     _columns = {
-        'product_id': fields.many2one('product.product', 'Product', 
+        'product_id': fields.many2one('product.product', 'Product',
                 required=True),
         'sequence': fields.integer('Sequence', required=True),
         'trigger_id': fields.many2one('qc.trigger', 'Trigger', required=True,
                 help="The Quality Control Trigger Tag which defines when must "
                 "to be created a Test (using the specified template) for a "
                 "Production Lot of this Product."),
-        'template_type': fields.selection([
-                    ('generic', 'Generic'),
-                    ('related', 'Specific'),
-                ], "Template's Type", required=True),
-        'template_id': fields.many2one('qc.test.template', 'Template', 
-                domain="[('type','=',template_type)]", required=True,
-                help="The Quality Control Template to use."),
+        'template_id': fields.many2one('qc.test.template', 'Template',
+                required=True, help="The Quality Control Template to use."),
         'company_id': fields.many2one('res.company', 'Company'),
     }
-    
+
     def _default_company_id(self, cr, uid, context=None):
         user = self.pool.get('res.users').browse(cr, uid, uid, context)
         return user.company_id.id
-    
-    _defaults = {  
+
+    _defaults = {
         'sequence': 0,
         'company_id': _default_company_id,
     }
-    
-    _sql_constraints = [
-        ('product_trigger_type_company_uniq', 
-                'unique (product_id, trigger_id, template_type, company_id)', 
-                "The tuple QC Trigger Tag and Template Type must be unique for "
-                "each Product and Company!"),
-    ]
 product_qc_trigger_template()
 
 
@@ -81,29 +70,30 @@ class product_product(osv.osv):
     The generic Templates get it's default value from the user's Company.
     '''
     _inherit = 'product.product'
-    
+
     # product.product
     def _calc_trigger_ids(self, cr, uid, ids, fieldname, args, context=None):
         trigger_template_proxy = self.pool.get('product.qc.trigger.template')
-        
+
         res = {}
         for product_id in ids:
             res[product_id] = []
-            
-            trigger_template_ids = trigger_template_proxy.search(cr, uid, 
-                    [('product_id','=',product_id)], context=context)
-            for trigger_template in trigger_template_proxy.browse(cr, uid, 
+
+            trigger_template_ids = trigger_template_proxy.search(cr, uid, [
+                        ('product_id', '=', product_id),
+                    ], context=context)
+            for trigger_template in trigger_template_proxy.browse(cr, uid,
                     trigger_template_ids, context):
                 if trigger_template.trigger_id.id not in res[product_id]:
                     res[product_id].append(trigger_template.trigger_id.id)
         return res
-    
+
     # product.product
     def _search_trigger_ids(self, cr, uid, obj, name, args, context):
         trigger_template_proxy = self.pool.get('product.qc.trigger.template')
-        
+
         res = []
-        for fieldname, operator, condition in args:
+        for unused, operator, condition in args:
             opposite = False
             if 'in' in operator:
                 if operator == 'not in':
@@ -113,21 +103,22 @@ class product_product(osv.osv):
                 if operator in ('!=', '<>'):
                     operator = '='
                     opposite = True
-            
-            template_trigger_ids = trigger_template_proxy.search(cr, uid,
-                    [('trigger_id', operator, condition)], context=context)
-            
+
+            template_trigger_ids = trigger_template_proxy.search(cr, uid, [
+                        ('trigger_id', operator, condition),
+                    ], context=context)
+
             product_ids = []
-            for template_trigger in trigger_template_proxy.browse(cr, uid, 
+            for template_trigger in trigger_template_proxy.browse(cr, uid,
                     template_trigger_ids, context):
                 product_ids.append(template_trigger.product_id.id)
-            
+
             operator = 'in'
             if opposite:
                 operator = 'not in'
             res.append(('id', operator, product_ids))
         return res
-    
+
     _columns = {
         'qc_template_trigger_ids': fields.one2many(
                 'product.qc.trigger.template', 'product_id', 'QC Triggers',
@@ -135,27 +126,26 @@ class product_product(osv.osv):
                 "Control Test (based on the defined Template).\n"
                 "It gets its default value for generic templates from the "
                 "Company."),
-        'qc_trigger_ids': fields.function(_calc_trigger_ids, method=True, 
+        'qc_trigger_ids': fields.function(_calc_trigger_ids, method=True,
                 type='many2many', relation='qc.trigger', string='QC Triggers',
                 fnct_search=_search_trigger_ids),
     }
-    
+
     # product.product
     def _default_qc_template_trigger_ids(self, cr, uid, context=None):
         user = self.pool.get('res.users').browse(cr, uid, uid, context)
-        
+
         res = []
-        for generic_trigger in user.company_id.qc_template_trigger_ids:
+        for company_trigger in user.company_id.qc_template_trigger_ids:
             res.append({
-                        'sequence': generic_trigger.sequence,
-                        'trigger_id': generic_trigger.trigger_id.id,
-                        'template_type': 'generic',
-                        'template_id': generic_trigger.template_id.id,
+                        'sequence': company_trigger.sequence,
+                        'trigger_id': company_trigger.trigger_id.id,
+                        'template_id': company_trigger.template_id.id,
                         'company_id': user.company_id.id,
                     })
         return res
-    
-    _defaults = {  
+
+    _defaults = {
         'qc_template_trigger_ids': _default_qc_template_trigger_ids,
     }
 product_product()

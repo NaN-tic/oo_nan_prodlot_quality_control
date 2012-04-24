@@ -28,35 +28,35 @@
 ##############################################################################
 
 {
-    "name" : "Production Lot Quality Control",
-    "version" : "0.2",
-    "author" : "NaN Projectes de Programari Lliure S.L.",
-    "category" : "Generic Modules/Quality Control",
+    "name": "Production Lot Quality Control",
+    "version": "0.2",
+    "author": "NaN Projectes de Programari Lliure S.L.",
+    "category": "Generic Modules/Quality Control",
     "website": "http://www.nan-tic.com",
     "description": """
     Module developed for Trod y Avia, S.L.
-    
-    This module supply an infrastructure to define Quality Test that the 
-    Production Lots must pass in some situations. It adds a workflow to 
+
+    This module supply an infrastructure to define Quality Test that the
+    Production Lots must pass in some situations. It adds a workflow to
     Production Lot.
-    Adds a new simple model for Quality Test to define Triggers (a mark to 
-    specify when a test must be passed) a model related to product with 
-    one2many field which define which tests must to pass the lots of the product
-    specifying the Test Template and the Trigger. In the Company there are a 
-    similar field and one2many to define the general tests (when a product is 
-    created take the default values from these values).
-    In the Production Lot there are a similar model and one2many field but 
+    Adds a new simple model for Quality Test to define Triggers (a mark to
+    specify when a test must be passed) a model related to product with
+    one2many field which define which tests must to pass the lots of the
+    product specifying the Test Template and the Trigger. In the Company there
+    are a similar field and one2many to define the general tests (when a
+    product is created take the default values from these values).
+    In the Production Lot there are a similar model and one2many field but
     relates the Lot with a trigger and Test.
-    
-    IMPORTANT: This module without anything else do not define any Test to pass.
-    It will be defined in other dependant modules. 
+
+    IMPORTANT: This module without anything else do not define any Test to pass
+    It will be defined in other dependant modules.
     """,
-    "depends" : [
+    "depends": [
         'stock',
         'nan_quality_control',
     ],
-    "init_xml" : [],
-    "update_xml" : [
+    "init_xml": [],
+    "update_xml": [
         'security/security.xml',
         'quality_control_view.xml',
         'company_view.xml',
@@ -65,7 +65,7 @@
         'prodlot_workflow.xml',
         'security/ir.model.access.csv',
     ],
-    "demo_xml" : [
+    "demo_xml": [
         'prodlot_quality_control_demo.xml',
     ],
     "test": [

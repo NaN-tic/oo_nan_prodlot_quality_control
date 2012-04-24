@@ -29,15 +29,16 @@
 
 from osv import osv, fields
 
+
 class res_company_qc_trigger_template(osv.osv):
     '''
-    Model to configure the default Quality Control Templates/Tests triggers by 
+    Model to configure the default Quality Control Templates/Tests triggers by
     Company. Define the template to use for a trigger, ordering it by sequence.
     '''
     _name = 'res.company.qc.trigger.template'
     _description = 'Quality Control Template Triggers by Company'
     _order = 'company_id, sequence'
-    
+
     _columns = {
         'company_id': fields.many2one('res.company', 'Company', required=True),
         'sequence': fields.integer('Sequence', required=True),
@@ -45,19 +46,13 @@ class res_company_qc_trigger_template(osv.osv):
                 help="The Quality Control Trigger Tag which defines when must "
                 "to be created a Test (using the specified template) for a "
                 "Production Lot."),
-        'template_id': fields.many2one('qc.test.template', 'Template', 
-                domain=[('type','=','generic')], required=True,
-                help="The Quality Control Template to use."),
+        'template_id': fields.many2one('qc.test.template', 'Template',
+                required=True, help="The Quality Control Template to use."),
     }
-    
-    _defaults = {  
+
+    _defaults = {
         'sequence': 0,
     }
-    
-    _sql_constraints = [
-        ('company_trigger_uniq', 'unique (company_id, trigger_id)', 
-                "The QC Trigger Tag must be unique for each Company!"),
-    ]
 res_company_qc_trigger_template()
 
 
@@ -68,7 +63,7 @@ class res_company(osv.osv):
     It will be used as default values when a new Product is created.
     '''
     _inherit = 'res.company'
-    
+
     _columns = {
         'qc_template_trigger_ids': fields.one2many(
                 'res.company.qc.trigger.template', 'company_id', 'QC Triggers',

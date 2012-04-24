@@ -13,7 +13,6 @@
                     <field name="company_id" select="1"/>
                     
                     <field name="trigger_id" select="1"/>
-                    <field name="template_type" select="1"/>
                     <field name="template_id"/>
                 </form>
             </field>
@@ -28,7 +27,6 @@
                     <field name="product_id"/>
                     <field name="sequence"/>
                     <field name="trigger_id"/>
-                    <field name="template_type"/>
                     <field name="template_id"/>
                     <field name="company_id"/>
                 </tree>
@@ -50,7 +48,6 @@
                             <tree string="Quality Control Triggers" editable="bottom">
                                 <field name="sequence"/>
                                 <field name="trigger_id"/>
-                                <field name="template_type"/>
                                 <field name="template_id"/>
                                 <field name="company_id"/>
                             </tree>
@@ -58,7 +55,6 @@
                                 <field name="company_id" select="1"/>
                                 <newline/>
                                 <field name="trigger_id" select="1"/>
-                                <field name="template_type" select="1"/>
                                 <field name="template_id"/>
                             </form>
                         </field>

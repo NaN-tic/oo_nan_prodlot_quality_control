@@ -7,18 +7,14 @@
             <field name="model">stock.production.lot.qc.trigger.test</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="QC Test Trigger by Lot">
+                <form string="QC Test Trigger by Lot" col="6">
                     <field name="prodlot_id" select="1"/>
                     <field name="sequence"/>
-                    
                     <field name="trigger_id" select="1"/>
-                    <field name="template_type" select="1"/>
                     
                     <field name="test_id"/>
-                    <group colspan="2" col="4">
-                        <field name="test_approved"/>
-                        <field name="test_success"/>
-                    </group>
+                    <field name="test_approved"/>
+                    <field name="test_success"/>
                 </form>
             </field>
         </record>
@@ -32,7 +28,6 @@
                     <field name="prodlot_id"/>
                     <field name="sequence"/>
                     <field name="trigger_id"/>
-                    <field name="template_type"/>
                     <field name="test_id"/>
                     <field name="test_approved"/>
                     <field name="test_success"/>
@@ -63,7 +58,6 @@
                             <tree string="Quality Control Triggers" editable="bottom">
                                 <field name="sequence"/>
                                 <field name="trigger_id"/>
-                                <field name="template_type"/>
                                 <field name="test_id"/>
                                 <field name="test_approved"/>
                                 <field name="test_success"/>
@@ -73,7 +67,6 @@
                             <tree string="Quality Control Triggers">
                                 <field name="sequence"/>
                                 <field name="trigger_id"/>
-                                <field name="template_type"/>
                                 <field name="test_id"/>
                                 <field name="test_approved"/>
                                 <field name="test_success"/>
