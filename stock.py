@@ -245,7 +245,7 @@ class stock_production_lot(osv.osv):
             test_id = qc_test_proxy.create(cr, uid, test_vals, context)
 
             qc_test_proxy.set_test_template(cr, uid, [test_id],
-                    template_trigger.template_id.id, context)
+                    template_trigger.template_id.id, context=context)
 
             test_trigger_vals.append((0, 0, {
                         'sequence': template_trigger.sequence,
