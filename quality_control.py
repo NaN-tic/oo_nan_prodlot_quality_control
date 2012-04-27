@@ -50,7 +50,7 @@ class qc_test(osv.osv):
     _inherit = 'qc.test'
 
     # qc.test
-    def action_wofkflow_draft(self, cr, uid, ids, context=None):
+    def action_workflow_draft(self, cr, uid, ids, context=None):
         """
         Check if the Test is in any Lot Trigger Test. In these case, raise an
         exception if the Test is not the current test of Lot or it is not in
@@ -88,7 +88,7 @@ class qc_test(osv.osv):
                         'lot_id': lot_test.prodlot_id.id,
                         'lot_state': state_labels[lot_test.prodlot_id.state],
                     })
-        return super(qc_test, self).action_wofkflow_draft(cr, uid, ids,
+        return super(qc_test, self).action_workflow_draft(cr, uid, ids,
                 context)
 qc_test()
 

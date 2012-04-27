@@ -14,7 +14,7 @@
             <field name="name">draft</field>
             <field name="flow_start">True</field>
             <field name="kind">function</field>
-            <field name="action">action_wofkflow_draft()</field>
+            <field name="action">action_workflow_draft()</field>
             <field name="signal_send">subflow.draft</field>
         </record>
         
@@ -22,7 +22,7 @@
             <field name="wkf_id" ref="wkf_prodlot"/>
             <field name="name">next_test</field>
             <field name="kind">function</field>
-            <field name="action">action_wofkflow_next_test()</field>
+            <field name="action">action_workflow_next_test()</field>
         </record>
         
         <record id="act_pending_test" model="workflow.activity">
@@ -30,14 +30,14 @@
             <field name="name">pending_test</field>
             <field name="kind">subflow</field>
             <field name="subflow_id" ref="nan_quality_control.wkf_qc_test"/>
-            <field name="action">action_wofkflow_pending_test()</field>
+            <field name="action">action_workflow_pending_test()</field>
         </record>
         
         <record id="act_valid" model="workflow.activity">
             <field name="wkf_id" ref="wkf_prodlot"/>
             <field name="name">valid</field>
             <field name="kind">function</field>
-            <field name="action">action_wofkflow_valid()</field>
+            <field name="action">action_workflow_valid()</field>
             <field name="signal_send">subflow.valid</field>
         </record>
         
@@ -46,7 +46,7 @@
             <field name="name">test_failed</field>
             <field name="kind">subflow</field>
             <field name="subflow_id" ref="nan_quality_control.wkf_qc_test"/>
-            <field name="action">action_wofkflow_test_failed()</field>
+            <field name="action">action_workflow_test_failed()</field>
             <field name="signal_send">subflow.test_failed</field>
         </record>
         
@@ -54,7 +54,7 @@
             <field name="wkf_id" ref="wkf_prodlot"/>
             <field name="name">cancel</field>
             <field name="kind">function</field>
-            <field name="action">action_wofkflow_cancel()</field>
+            <field name="action">action_workflow_cancel()</field>
             <field name="signal_send">subflow.cancel</field>
         </record>
         

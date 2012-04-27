@@ -320,7 +320,7 @@ class stock_production_lot(osv.osv):
         return res
 
     # stock.production.lot
-    def action_wofkflow_draft(self, cr, uid, ids, context=None):
+    def action_workflow_draft(self, cr, uid, ids, context=None):
         """
         Sets the State of Lot to 'Draft' and deactivate it
         """
@@ -362,7 +362,7 @@ class stock_production_lot(osv.osv):
         return next_trigger_ids and next_trigger_ids[0] or False
 
     # stock.production.lot
-    def action_wofkflow_next_test(self, cr, uid, ids, context=None):
+    def action_workflow_next_test(self, cr, uid, ids, context=None):
         """
         Find the Next Test to pass and write it to 'current_qc_test_trigger_id'
         field.
@@ -393,7 +393,7 @@ class stock_production_lot(osv.osv):
         return True
 
     # stock.production.lot
-    def action_wofkflow_valid(self, cr, uid, ids, context=None):
+    def action_workflow_valid(self, cr, uid, ids, context=None):
         """
         Sets the State of Lot to 'Valid' and activate the Lot.
         """
@@ -416,7 +416,7 @@ class stock_production_lot(osv.osv):
         return True
 
     # stock.production.lot
-    def action_wofkflow_pending_test(self, cr, uid, ids, context=None):
+    def action_workflow_pending_test(self, cr, uid, ids, context=None):
         """
         Sets the State of Lot to 'Pending Test' and deactivate it, and returns
         the ID of current QC Test.
@@ -436,7 +436,7 @@ class stock_production_lot(osv.osv):
         return lot.current_qc_test_id.id
 
     # stock.production.lot
-    def action_wofkflow_test_failed(self, cr, uid, ids, context=None):
+    def action_workflow_test_failed(self, cr, uid, ids, context=None):
         """
         Sets the State of Lot to 'Test Failed', deactivate it and returns the
         ID of current Test
@@ -508,7 +508,7 @@ class stock_production_lot(osv.osv):
         return False
 
     # stock.production.lot
-    def action_wofkflow_cancel(self, cr, uid, ids, context=None):
+    def action_workflow_cancel(self, cr, uid, ids, context=None):
         """
         Sets the State of Lot to 'Cancel', deactivate it and leave empty the
         'Current QC Test Trigger' field.
