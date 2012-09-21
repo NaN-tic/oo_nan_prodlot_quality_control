@@ -30,7 +30,7 @@
 {
     "name": "Production Lot Quality Control",
     "version": "0.2",
-    "author": "NaN Projectes de Programari Lliure S.L.",
+    "author": "NaN·tic",
     "category": "Quality Control",
     "website": "http://www.nan-tic.com",
     "description": """
