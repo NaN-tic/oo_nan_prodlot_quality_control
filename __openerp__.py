@@ -31,7 +31,7 @@
     "name": "Production Lot Quality Control",
     "version": "0.2",
     "author": "NaN Projectes de Programari Lliure S.L.",
-    "category": "Generic Modules/Quality Control",
+    "category": "Quality Control",
     "website": "http://www.nan-tic.com",
     "description": """
     Module developed for Trod y Avia, S.L.
@@ -64,6 +64,13 @@
         'stock_view.xml',
         'prodlot_workflow.xml',
         'security/ir.model.access.csv',
+    ],
+    "images": [
+        'images/company.png',
+        'images/prodlot_form.png',
+        'images/prodlot_form2.png',
+        'images/prodlot_list.png',
+        'images/product.png',
     ],
     "demo_xml": [
         'prodlot_quality_control_demo.xml',
