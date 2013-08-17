@@ -63,6 +63,10 @@
         </record>
     </data>
     <data noupdate="1">
+    	<record id="product.cat0" model="product.category">
+            <field name="parent_id" ref="product.product_category_all"/>
+            <field name="name">QC TEST</field>
+        </record>
         <record id="product_wo_qc0" model="product.product">
             <field name="name">Product without Quality Control</field>
             <field name="type">product</field>
